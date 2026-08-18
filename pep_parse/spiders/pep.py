@@ -1,12 +1,13 @@
 import scrapy
 
 from pep_parse.items import PepParseItem
+from pep_parse.settings import PEP_NAME, PEP_ALLOWED_DOMAINS, PEP_START_URLS
 
 
 class PepSpider(scrapy.Spider):
-    name = 'pep'
-    allowed_domains = ['peps.python.org']
-    start_urls = ['https://peps.python.org/']
+    name = PEP_NAME
+    allowed_domains = PEP_ALLOWED_DOMAINS
+    start_urls = PEP_START_URLS
 
     def parse(self, response):
         for link in response.css('table.pep-zero-table tbody a::attr(href)'):

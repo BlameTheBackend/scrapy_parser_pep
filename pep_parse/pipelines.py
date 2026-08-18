@@ -1,3 +1,4 @@
+import csv
 from datetime import datetime
 from collections import Counter
 
@@ -20,9 +21,8 @@ class PepParsePipeline:
         results_dir.mkdir(exist_ok=True)
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         csv_path = results_dir / f'status_summary_{timestamp}.csv'
-        print(spider.settings.getdict('FEEDS'))
-        with open(csv_path, mode='w', encoding='utf-8') as f:
-            f.write('Статус,Количество\n')
-            for status, quantity in self.statuses.items():
-                f.write(f'{status},{quantity}\n')
-            f.write(f'Total,{sum(self.statuses.values())}\n')
+        with open(csv_path, mode='w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(['Статус', 'Количество'])
+            writer.writerows(self.statuses.items())
+            writer.writerow(['Total', sum(self.statuses.values())])
